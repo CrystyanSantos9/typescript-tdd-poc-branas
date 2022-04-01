@@ -1,6 +1,10 @@
+/* eslint-disable import/extensions */
+/* eslint-disable import/no-unresolved */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable class-methods-use-this */
+
 import Installment from './Installment';
+import Tax from './Tax';
 
 export default class Transaction {
   installments: Installment[];
@@ -10,6 +14,7 @@ export default class Transaction {
         readonly amount: number,
         readonly paymentMethod: string,
         readonly numberOfInstallments: number = 1,
+        readonly tax: Tax,
   ) {
     this.installments = [];
     this.generateInstallments();
@@ -19,8 +24,9 @@ export default class Transaction {
     let installmentNumber = 1;
     const installmentAmount = this.amount / this.numberOfInstallments;
     while (installmentNumber <= this.numberOfInstallments) {
-      const installment = new Installment(installmentNumber + 1, installmentAmount);
+      const installment = new Installment(installmentNumber, installmentAmount, this.tax);
       this.installments.push(installment);
+      installmentNumber += 1;
     }
   }
 
@@ -34,7 +40,7 @@ export default class Transaction {
 
   pay(installmentNumber: number) {
     const installment = this.installments.find(
-      (installment) => installment.numberOfInstallment === installmentNumber,
+      (installmentSelected) => installmentSelected.numberOfInstallment === installmentNumber,
     );
     if (!installment) throw new Error();
     installment.status = 'paid';

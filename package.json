@@ -8,6 +8,7 @@
     "start": "node build/index.js",
     "dev": "ts-node-dev --ignore-watch node_modules src/index.ts",
     "test": "jest",
+    "coverage": "jest --coverage",
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
